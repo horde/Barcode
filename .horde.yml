@@ -3,15 +3,13 @@ id: Barcode
 name: Barcode
 type: library
 full: Horde Barcode and QR Code Rendering and Parsing Library
-description: >-
-  Generates and reads barcodes (1D and 2D) with a layered architecture:
-  encoders for symbology standards, renderers for output formats, and
-  semantic parsers for structured data payloads.
+description: |-
+  Generates and reads barcodes (1D and 2D) with a layered architecture: encoders for symbology standards, renderers for output formats, and semantic parsers for structured data payloads.
 list: horde
 homepage: http://www.horde.org/libraries/Horde_Barcode
 version:
-  release: 1.0.0alpha1
-  api: 1.0.0alpha1
+  release: 1.0.0-alpha1
+  api: 1.0.0alpha0
 state:
   release: alpha
   api: alpha

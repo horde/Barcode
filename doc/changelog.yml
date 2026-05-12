@@ -4,24 +4,10 @@
   state:
     release: alpha
     api: alpha
-  date: 2026-05-10
+  date: 2026-05-12
   license:
-    identifier: LGPL-2.1-only
-    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+    identifier: LGPL-2.1
+    uri: https://spdx.org/licenses/LGPL-2.1.html
   notes: |-
-    Initial release.
-    feat: QR Code encoder (ISO/IEC 18004, versions 1-40, EC levels L/M/Q/H)
-    feat: Data Matrix encoder (ISO/IEC 16022, ECC200)
-    feat: Code 128 encoder (ISO/IEC 15417, character sets A/B/C)
-    feat: EAN/UPC encoder (ISO/IEC 15420, EAN-13, EAN-8)
-    feat: Code 39 encoder (ISO/IEC 16388)
-    feat: ITF-14 encoder (ISO/IEC 16390)
-    feat: HTML renderer (standalone, no dependencies)
-    feat: Image renderer (via horde/Image)
-    feat: PDF renderer (via horde/Pdf)
-    feat: Semantic encoders/decoders for WiFi, vCard, OTP, URL, Email, SMS, Tel
-    feat: Payment semantics (SEPA EPC, EMVCo, Pix, UPI)
-    feat: GS1 semantics (GTIN, GS1 element strings, Digital Link)
-    feat: Transport semantics (IATA BCBP)
-    feat: Healthcare semantics (UDI, HIBC)
-    feat: Reader interfaces (not yet implemented)
+    chore: Add missing changelog.yml
+    chore: Initial commit

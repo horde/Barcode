@@ -27,14 +27,14 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "horde/image": "^3",
-        "horde/pdf": "^3",
-        "horde/otp": "^1"
+        "horde/image": "^3 || dev-FRAMEWORK_6_0",
+        "horde/pdf": "^3 || dev-FRAMEWORK_6_0",
+        "horde/otp": "^1 || dev-FRAMEWORK_6_0"
     },
     "suggest": {
-        "horde/image": "^3",
-        "horde/pdf": "^3",
-        "horde/otp": "^1"
+        "horde/image": "^3 || dev-FRAMEWORK_6_0",
+        "horde/pdf": "^3 || dev-FRAMEWORK_6_0",
+        "horde/otp": "^1 || dev-FRAMEWORK_6_0"
     },
     "autoload": {
         "psr-4": {
