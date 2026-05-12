@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 /**
- * Renders barcodes as HTML tables with inline CSS.
+ * Renders barcodes as HTML tables with CSS class names.
  *
- * No external dependencies required. Each module becomes a table cell
- * with background-color styling.
+ * No external dependencies required. Each module becomes a table cell.
+ * In 'builtin' mode a <style> block is prepended; in 'external' mode
+ * only class names are emitted (caller provides CSS).
  *
  * Copyright 2026 The Horde Project (http://www.horde.org/)
  *
@@ -21,29 +22,40 @@ use Horde\Barcode\Encoder\ModuleMatrix;
 
 final class HtmlRenderer implements RendererInterface
 {
+    /**
+     * @param string $style 'builtin' emits a <style> block; 'external' emits only class names
+     */
+    public function __construct(
+        private readonly string $style = 'builtin',
+    ) {}
+
     public function renderMatrix(ModuleMatrix $matrix, RendererOptions $options): string
     {
         $scale = $options->scale;
         $fg = htmlspecialchars($options->foreground, ENT_QUOTES);
         $bg = htmlspecialchars($options->background, ENT_QUOTES);
         $quiet = $options->quietZone;
-
-        $cellStyle = sprintf('width:%dpx;height:%dpx;', $scale, $scale);
-        $darkCell = sprintf('<td style="%sbackground:%s"></td>', $cellStyle, $fg);
-        $lightCell = sprintf('<td style="%sbackground:%s"></td>', $cellStyle, $bg);
-
         $totalWidth = ($matrix->width() + $quiet * 2) * $scale;
 
-        $html = sprintf(
-            '<table style="border-collapse:collapse;border-spacing:0;margin:0;padding:0;line-height:0;width:%dpx">',
-            $totalWidth,
-        );
+        $html = '';
 
-        // Top quiet zone
+        if ($this->style === 'builtin') {
+            $html .= '<style>'
+                . '.horde-bc{border-collapse:collapse;border-spacing:0;margin:0;padding:0;line-height:0;font-size:0}'
+                . sprintf('.horde-bc td{width:%dpx;height:%dpx;padding:0}', $scale, $scale)
+                . sprintf('.horde-bc-d{background:%s}', $fg)
+                . sprintf('.horde-bc-l{background:%s}', $bg)
+                . '</style>';
+        }
+
+        $html .= sprintf('<table class="horde-bc" style="width:%dpx">', $totalWidth);
+
+        $darkCell = '<td class="horde-bc-d"></td>';
+        $lightCell = '<td class="horde-bc-l"></td>';
+
         $quietRow = '<tr>' . str_repeat($lightCell, $matrix->width() + $quiet * 2) . '</tr>';
         $html .= str_repeat($quietRow, $quiet);
 
-        // Data rows
         for ($row = 0; $row < $matrix->height(); $row++) {
             $html .= '<tr>';
             $html .= str_repeat($lightCell, $quiet);
@@ -54,9 +66,7 @@ final class HtmlRenderer implements RendererInterface
             $html .= '</tr>';
         }
 
-        // Bottom quiet zone
         $html .= str_repeat($quietRow, $quiet);
-
         $html .= '</table>';
         return $html;
     }
@@ -71,15 +81,24 @@ final class HtmlRenderer implements RendererInterface
         $barHeight = $options->height ?? (int) ($bars->height() * $scale * 20);
         $quietWidth = $quiet * $scale;
 
-        $html = '<table style="border-collapse:collapse;border-spacing:0;margin:0;padding:0;line-height:0"><tr>';
+        $html = '';
 
-        // Left quiet zone
+        if ($this->style === 'builtin') {
+            $html .= '<style>'
+                . '.horde-bc{border-collapse:collapse;border-spacing:0;margin:0;padding:0;line-height:0;font-size:0}'
+                . '.horde-bc td{padding:0}'
+                . sprintf('.horde-bc-d{background:%s}', $fg)
+                . sprintf('.horde-bc-l{background:%s}', $bg)
+                . '</style>';
+        }
+
+        $html .= '<table class="horde-bc"><tr>';
+
         if ($quietWidth > 0) {
             $html .= sprintf(
-                '<td style="width:%dpx;height:%dpx;background:%s"></td>',
+                '<td class="horde-bc-l" style="width:%dpx;height:%dpx"></td>',
                 $quietWidth,
                 $barHeight,
-                $bg,
             );
         }
 
@@ -88,22 +107,20 @@ final class HtmlRenderer implements RendererInterface
             if ($barWidth < 1) {
                 $barWidth = 1;
             }
-            $color = $bar->dark ? $fg : $bg;
+            $class = $bar->dark ? 'horde-bc-d' : 'horde-bc-l';
             $html .= sprintf(
-                '<td style="width:%dpx;height:%dpx;background:%s"></td>',
+                '<td class="%s" style="width:%dpx;height:%dpx"></td>',
+                $class,
                 $barWidth,
                 $barHeight,
-                $color,
             );
         }
 
-        // Right quiet zone
         if ($quietWidth > 0) {
             $html .= sprintf(
-                '<td style="width:%dpx;height:%dpx;background:%s"></td>',
+                '<td class="horde-bc-l" style="width:%dpx;height:%dpx"></td>',
                 $quietWidth,
                 $barHeight,
-                $bg,
             );
         }
 

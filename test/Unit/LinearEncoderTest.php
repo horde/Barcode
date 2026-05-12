@@ -145,8 +145,9 @@ class LinearEncoderTest extends TestCase
         $renderer = new HtmlRenderer();
         $html = $renderer->renderBars($pattern, new RendererOptions(scale: 2));
 
-        $this->assertStringStartsWith('<table', $html);
+        $this->assertStringStartsWith('<style>', $html);
         $this->assertStringEndsWith('</table>', $html);
+        $this->assertStringContainsString('horde-bc-d', $html);
         $this->assertStringContainsString('background:#000000', $html);
     }
 }

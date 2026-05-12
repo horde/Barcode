@@ -107,8 +107,10 @@ class QrEncoderTest extends TestCase
         $renderer = new HtmlRenderer();
         $html = $renderer->renderMatrix($matrix, new RendererOptions(scale: 2));
 
-        $this->assertStringStartsWith('<table', $html);
+        $this->assertStringStartsWith('<style>', $html);
         $this->assertStringEndsWith('</table>', $html);
+        $this->assertStringContainsString('horde-bc-d', $html);
+        $this->assertStringContainsString('horde-bc-l', $html);
         $this->assertStringContainsString('background:#000000', $html);
         $this->assertStringContainsString('background:#FFFFFF', $html);
     }
@@ -117,7 +119,7 @@ class QrEncoderTest extends TestCase
     {
         $html = Barcode::qrHtml('https://example.com', 3);
 
-        $this->assertStringStartsWith('<table', $html);
+        $this->assertStringStartsWith('<style>', $html);
         $this->assertStringContainsString('<td', $html);
         $this->assertStringEndsWith('</table>', $html);
     }
