@@ -11,3 +11,14 @@
   notes: |-
     chore: Add missing changelog.yml
     chore: Initial commit
+1.0.0-RC1:
+  api: 1.0.0-RC1
+  state:
+    release: RC
+    api: RC
+  date: 2026-05-19
+  license:
+    identifier: LGPL-2.1
+    uri: https://spdx.org/licenses/LGPL-2.1.html
+  notes: |-
+    feat: Allow optionally externalizing css

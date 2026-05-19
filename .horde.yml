@@ -8,10 +8,10 @@ description: |-
 list: horde
 homepage: http://www.horde.org/libraries/Horde_Barcode
 version:
-  release: 1.0.0-alpha1
+  release: 1.0.0-RC1
   api: 1.0.0alpha0
 state:
-  release: alpha
+  release: RC
   api: alpha
 license:
   identifier: LGPL-2.1
