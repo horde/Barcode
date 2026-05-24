@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Integration test configuration for horde/Barcode.
+ *
+ * Copy this file to conf.php and adjust values for your environment.
+ */
+
+$conf['reader']['zbar']['binary'] = '/usr/bin/zbarimg';
+$conf['reader']['qrencode']['binary'] = '/usr/bin/qrencode';
