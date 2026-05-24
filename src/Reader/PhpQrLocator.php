@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Pure-PHP QR code locator using finder pattern detection.
  *
- * Requires horde/image for pixel access (GdDriver or ImagickDriver).
+ * Uses horde/Image for pixel access (GdDriver or ImagickDriver).
  * Binarizes the image, scans for the three QR finder patterns, then
  * extracts the module grid.
  *
@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace Horde\Barcode\Reader;
 
-use Horde\Barcode\Exception\BarcodeException;
+use Horde\Image\Driver\ImageDriver;
+use Horde\Image\Driver\PixelReader;
 
 final class PhpQrLocator implements QrLocatorInterface
 {
     public function __construct(
+        private readonly ?ImageDriver $driver = null,
         private readonly int $threshold = 128,
     ) {}
 
@@ -81,30 +83,52 @@ final class PhpQrLocator implements QrLocatorInterface
      */
     private function binarize(string $imageData): ?array
     {
-        $gd = @imagecreatefromstring($imageData);
-        if ($gd === false) {
+        $driver = $this->resolveDriver();
+        if ($driver === null) {
             return null;
         }
 
-        $width = imagesx($gd);
-        $height = imagesy($gd);
+        try {
+            $resource = $driver->load($imageData);
+        } catch (\Throwable) {
+            return null;
+        }
+
+        if (!$resource instanceof PixelReader) {
+            return null;
+        }
+
+        $size = $resource->size();
+        $width = (int) $size->width;
+        $height = (int) $size->height;
 
         $pixels = [];
         for ($y = 0; $y < $height; $y++) {
             $row = [];
             for ($x = 0; $x < $width; $x++) {
-                $rgb = imagecolorat($gd, $x, $y);
-                $r = ($rgb >> 16) & 0xFF;
-                $g = ($rgb >> 8) & 0xFF;
-                $b = $rgb & 0xFF;
-                $lum = (int) round(0.299 * $r + 0.587 * $g + 0.114 * $b);
-                $row[] = $lum < $this->threshold;
+                $row[] = $resource->getLuminance($x, $y) < $this->threshold;
             }
             $pixels[] = $row;
         }
 
-        imagedestroy($gd);
         return [$pixels, $width, $height];
+    }
+
+    private function resolveDriver(): ?ImageDriver
+    {
+        if ($this->driver !== null) {
+            return $this->driver;
+        }
+
+        if (extension_loaded('gd')) {
+            return new \Horde\Image\Driver\GdDriver();
+        }
+
+        if (extension_loaded('imagick')) {
+            return new \Horde\Image\Driver\ImagickDriver();
+        }
+
+        return null;
     }
 
     /**

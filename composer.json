@@ -21,20 +21,27 @@
         "gs1"
     ],
     "time": "2026-05-19",
-    "repositories": [],
+    "minimum-stability": "alpha",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../Image"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "horde/image": "^3 || dev-FRAMEWORK_6_0",
+        "horde/image": "^3 || dev-FRAMEWORK_6_0 || dev-feat/pixel-reader-interface",
         "horde/pdf": "^3 || dev-FRAMEWORK_6_0",
         "horde/otp": "^1 || dev-FRAMEWORK_6_0"
     },
     "suggest": {
-        "horde/image": "^3 || dev-FRAMEWORK_6_0",
-        "horde/pdf": "^3 || dev-FRAMEWORK_6_0",
-        "horde/otp": "^1 || dev-FRAMEWORK_6_0"
+        "horde/image": "Required for image-based barcode reading (GD or Imagick)",
+        "horde/pdf": "Required for PDF barcode rendering",
+        "horde/otp": "Required for OTP/TOTP QR code generation"
     },
     "autoload": {
         "psr-4": {
