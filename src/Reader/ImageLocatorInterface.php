@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 /**
- * Contract for locating barcodes within raster images.
+ * Contract for locating barcodes and 2D codes within raster images.
  *
- * Implementations use image processing to find barcode symbols in
- * photographs or scanned documents and return their module matrices.
+ * Combines both QR/2D and linear barcode detection into a single
+ * interface. Implementations may delegate to separate locators for
+ * each symbology family.
  *
  * Copyright 2026 The Horde Project (http://www.horde.org/)
  *
@@ -16,15 +17,13 @@ declare(strict_types=1);
 
 namespace Horde\Barcode\Reader;
 
-use Horde\Barcode\Encoder\ModuleMatrix;
-
-interface ImageLocatorInterface
+interface ImageLocatorInterface extends QrLocatorInterface, LinearLocatorInterface
 {
     /**
-     * Locate and extract barcode module matrices from an image.
+     * Locate and decode all recognizable symbols in an image.
      *
      * @param string $imageData Raw image binary data (PNG, JPEG, etc.)
-     * @return list<ModuleMatrix> Zero or more located symbols
+     * @return list<LocatedSymbol>
      */
     public function locate(string $imageData): array;
 }
