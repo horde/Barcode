@@ -1,16 +1,14 @@
 ---
-1.0.0-alpha1:
-  api: 1.0.0-alpha1
+1.0.0:
+  api: 1.0.0
   state:
-    release: alpha
-    api: alpha
-  date: 2026-05-12
+    release: stable
+    api: stable
+  date: 2026-06-26
   license:
     identifier: LGPL-2.1
     uri: https://spdx.org/licenses/LGPL-2.1.html
-  notes: |-
-    chore: Add missing changelog.yml
-    chore: Initial commit
+  notes: 'test: Cover Locators'
 1.0.0-RC1:
   api: 1.0.0-RC1
   state:
@@ -20,5 +18,14 @@
   license:
     identifier: LGPL-2.1
     uri: https://spdx.org/licenses/LGPL-2.1.html
-  notes: |-
-    feat: Allow optionally externalizing css
+  notes: 'feat: Allow optionally externalizing css'
+1.0.0-alpha1:
+  api: 1.0.0-alpha1
+  state:
+    release: alpha
+    api: alpha
+  date: 2026-05-12
+  license:
+    identifier: LGPL-2.1
+    uri: https://spdx.org/licenses/LGPL-2.1.html
+  notes: "chore: Add missing changelog.yml\nchore: Initial commit"

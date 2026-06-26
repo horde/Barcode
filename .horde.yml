@@ -8,17 +8,16 @@ description: |-
 list: horde
 homepage: http://www.horde.org/libraries/Horde_Barcode
 version:
-  release: 1.0.0-RC1
+  release: 1.0.0
   api: 1.0.0alpha0
 state:
-  release: RC
+  release: ''
   api: alpha
 license:
   identifier: LGPL-2.1
   uri: http://www.horde.org/licenses/lgpl21
 authors:
-  -
-    name: Ralf Lang
+  - name: Ralf Lang
     user: rlang
     email: ralf.lang@ralf-lang.de
     role: maintainer
